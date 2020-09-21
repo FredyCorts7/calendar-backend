@@ -1,10 +1,22 @@
-const addUser = (req, res) => {
-  const { name, email, password } = req.body;
+const User = require('../models/User');
 
-  res.json({
-    ok: true,
-    msg: 'Register endpoint',
-  });
+const addUser = async (req, res) => {
+  try {
+    //   const { name, email, password } = req.body;
+
+    const user = new User(req.body);
+    await user.save();
+
+    res.status(201).json({
+      ok: true,
+      msg: 'Register endpoint',
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      msg: 'Error of server',
+    });
+  }
 };
 
 const getUser = (req, res) => {
