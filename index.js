@@ -1,7 +1,11 @@
 const express = require('express');
+const { dbConnection } = require('./database');
 require('dotenv').config();
 
 const app = express();
+
+//database
+dbConnection();
 
 //middlewares
 app.use(express.json());
