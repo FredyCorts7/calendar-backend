@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const { generateJwt } = require('../helpers/jwt');
+const jwt = require('../helpers/jwt');
 
 const addUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -72,10 +73,14 @@ const getUser = async (req, res) => {
   }
 };
 
-const refreshToken = (req, res) => {
+const refreshToken = async (req, res) => {
+  const { uid, name } = req;
+
+  const token = await jwt.generateJwt(uid, name);
+
   res.json({
     ok: true,
-    msg: 'Token refresh endpoint',
+    token,
   });
 };
 
