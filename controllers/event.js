@@ -6,6 +6,9 @@ const getEvents = (req, res) => {
 };
 
 const addEvent = (req, res) => {
+  console.log(req.body);
+  //   const event = new Event();
+
   res.json({
     ok: true,
     msg: 'add events',
