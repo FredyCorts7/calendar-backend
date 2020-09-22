@@ -1,3 +1,4 @@
+const { findById } = require('../models/Event');
 const Event = require('../models/Event');
 
 const getEvents = async (req, res) => {
@@ -75,11 +76,38 @@ const editEvent = async (req, res) => {
   }
 };
 
-const removeEvent = (req, res) => {
-  res.json({
-    ok: true,
-    msg: 'remove events',
-  });
+const removeEvent = async (req, res) => {
+  const { id } = req.params;
+  const { uid } = req;
+
+  try {
+    const event = await Event.findById(id);
+    if (!event) {
+      return res.status(404).json({
+        ok: false,
+        msg: 'Event not exist',
+      });
+    }
+
+    if (event.user.toString() !== uid) {
+      return res.status(401).json({
+        ok: false,
+        msg: 'Unauthorized',
+      });
+    }
+
+    await Event.findByIdAndDelete(id);
+
+    res.json({
+      ok: true,
+      msg: 'Event deleted',
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      msg: 'Server error',
+    });
+  }
 };
 
 module.exports = {
