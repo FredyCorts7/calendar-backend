@@ -1,10 +1,19 @@
 const Event = require('../models/Event');
 
-const getEvents = (req, res) => {
-  res.json({
-    ok: true,
-    msg: 'get events',
-  });
+const getEvents = async (req, res) => {
+  try {
+    const events = await Event.find().populate('user', 'name');
+
+    res.json({
+      ok: true,
+      events,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: true,
+      msg: 'Server error',
+    });
+  }
 };
 
 const addEvent = async (req, res) => {
