@@ -11,6 +11,9 @@ dbConnection();
 //cors
 app.use(cors());
 
+//public dir
+app.use(express.static('public'));
+
 //middlewares
 app.use(express.json());
 
